@@ -2,6 +2,7 @@ package edu.grinnell.csc207.sorting;
 
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.Random;
 
 /**
  * Sort using Quicksort.
@@ -62,9 +63,12 @@ public class Quicksorter<T> extends SorterBridge<T> {
     * @post
     *    For all i, lb <= i < mid, order.compare(values[i],pivot) <= 0
     *    For all i, mid < i < ub, order.compare(pivot, values[i]) < 0
+    *
+    * Loop invariant: 
+    * ...For each j where lb < pivot < ub, values[pivot] 
     */
    int partition(T[] vals, Comparator<T> order, int lb, int ub) {
-       // STUB
-       return lb;
+       Random pivot = new Random();
+       return (pivot.nextInt((ub - 1) - lb) + lb);
    } // partition
 } // Quicksorter<T>

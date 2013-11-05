@@ -12,6 +12,15 @@ import java.util.Comparator;
 public class SelectionSorter<T> extends SorterBridge<T> {
    /**
     * Sort vals using selection sort.  See Sorter<T> for more details.
+    * 
+    * Loop Invariant: Items to the left of vals[i] are sorted. 
+    * Items from vals[i] to the right are unsorted.
+    * For every j where 0 <= j < i, vals[j] <= vals[j+1]
+    * 		    
+    * -----------------------------------------
+    * |  sorted     |       unsorted        |
+    * -----------------------------------------
+    * 		    i
     */
    @Override
    public T[] sorti(T[] vals, Comparator<T> order) {
@@ -46,9 +55,15 @@ public class SelectionSorter<T> extends SorterBridge<T> {
     *     For all j, lb <= j < ub, order.compare(values[i], values[j]) <= 0.
     * @post
     *     values is not mutated
+    *     
+    *     Loop Invariant: For every j where 0 <= j <= i, vals[j] <= vals[lb]
     */
    int indexOfSmallest(T[] vals, Comparator<T> order, int lb, int ub) {
-       // STUB
+       int i = 0;
+       while(i<vals.length){
+	   if (order.compare(vals[i], vals[lb]) < 0)
+	       lb = i;
+       }
        return lb;
    } // indexOfSmallest(T[], Comparator<T>, int, int)
 
