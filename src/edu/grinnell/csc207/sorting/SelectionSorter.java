@@ -61,10 +61,11 @@ public class SelectionSorter<T> extends SorterBridge<T> {
    int indexOfSmallest(T[] vals, Comparator<T> order, int lb, int ub) {
        int i = 0;
        while(i<vals.length){
-	   if (order.compare(vals[i], vals[lb]) < 0)
+	   if (order.compare(vals[i], vals[lb]) < 0) {
 	       lb = i;
+	   }
+	   i++;
        }
        return lb;
    } // indexOfSmallest(T[], Comparator<T>, int, int)
-
 } // SelectionSorter<T>

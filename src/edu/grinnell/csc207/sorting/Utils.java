@@ -1,7 +1,6 @@
 package edu.grinnell.csc207.sorting;
 
 import java.io.PrintWriter;
-
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Random;
@@ -14,7 +13,7 @@ import java.util.Random;
  * @author Your Name Here
  */
 class Utils {
-
+    	
     // +---------------+---------------------------------------------------
     // | Static Fields |
     // +---------------+
@@ -23,11 +22,31 @@ class Utils {
      * A random number generator for use in permutations and such.
      */
     static Random generator = new Random();
+    
+    /**
+     * A counter for the swap method. 
+     */
+    static int counter = 0;
 
     // +----------------+--------------------------------------------------
     // | Static Methods |
     // +----------------+
 
+    /**
+     * Gets the value of the counter.
+     */
+    public static void getCounter() {
+	PrintWriter pen = new PrintWriter(System.out, true);
+	pen.println(counter);
+    } // getCounter
+    
+    /**
+     * Sets the counter to zero.
+     */
+    public static void setCounter() {
+	counter = 0;
+    } // setCounter
+    
     /**
      * Merge the values in arrays a1 and a2 into a new array.
      * 
@@ -52,10 +71,22 @@ class Utils {
      * @post sorted(merged, order).
      * @post merged is a permutation of the concatenation of the given subarrays
      *       of a1 and a2.
+     *       
+     * Loop invariant:    
+     * Loop Invariant: Items to the left of vals[i] are sorted. 
+     * Items from vals[i] to the right are null.
+     * For every j where 0 <= j < i, vals[j] <= vals[j+1]
+     * 	    
+     * -----------------------------------------
+     * |  sorted     |         null            |
+     * -----------------------------------------
+     * 		    i   
      */
     public static <T> T[] merge(Comparator<T> order, T[] a1, int lb1, 
             int ub1, T[] a2, int lb2, int ub2) {
+	@SuppressWarnings("unchecked")
 	T[] sorted = (T[]) new Object[a1.length + a2.length];
+	
 	int i = 0;
         while(i < sorted.length) {
             if(order.compare(a1[lb1], a2[lb2]) <= 0){
@@ -158,6 +189,7 @@ class Utils {
 	T tmp = values[i];
 	values[i] = values[j];
 	values[j] = tmp;
+	counter++;
     } // swap(T[], int, int)
 
     // +-------------+-----------------------------------------------------
@@ -190,6 +222,10 @@ class Utils {
 	// Print the transformation for folks who like to look.
 	pen.println("sort(" + Arrays.toString(values) + ") => ");
 	pen.println("          " + Arrays.toString(resorted));
+	
+	// Print the number of times swap is used and reset the counter. 
+	getCounter();
+	setCounter();
     } // checkSorting
 
     /**

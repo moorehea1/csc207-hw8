@@ -24,16 +24,17 @@ public class Quicksorter<T> extends SorterBridge<T> {
    /**
     * Sort the elements in positions [lb..ub) using Quicksort.
     */
-   public void qsort(T[] vals, Comparator<T> order, int lb, int ub) {
-       // One element arrays are sorted.
-       if (lb >= ub) {
-           return;
-       } else {
-           int mid = partition(vals, order, lb, ub);
-           qsort(vals, order, lb, mid-1);
-           qsort(vals, order, mid+1, ub);
-       } // More than one element
-   } // sorti(T[], Comparator<T>, int, int)
+   
+    public void qsort(T[] vals, Comparator<T> order, int lb, int ub) {
+	// One element arrays are sorted.
+	if (lb >= ub - 1) {
+	    return;
+	} else {
+	    int mid = partition(vals, order, lb, ub);
+	    qsort(vals, order, lb, mid);
+	    qsort(vals, order, mid + 1, ub);
+	} // More than one element
+    } // qsort(T[], Comparator<T>, int, int)
 
    /**
     * Pick a random pivot and reorganize the elements in positions 
@@ -68,7 +69,23 @@ public class Quicksorter<T> extends SorterBridge<T> {
     * ...For each j where lb < pivot < ub, values[pivot] 
     */
    int partition(T[] vals, Comparator<T> order, int lb, int ub) {
-       Random pivot = new Random();
-       return (pivot.nextInt((ub - 1) - lb) + lb);
+       int pivot = new Random().nextInt(vals.length);
+       int i = 0;
+       int j = vals.length - 1;
+       
+	while (i <= j) {
+	    while (order.compare(vals[i], vals[pivot]) <= 0) {
+		i++;
+	    } // while
+	    while (order.compare(vals[j], vals[pivot]) > 0) {
+		j--;
+	    } // while
+	    if (order.compare(vals[i], vals[j]) <= 0) {
+		Utils.swap(vals, i, j);
+		i++;
+		j--;
+	    } // if
+	} // while
+       return pivot;
    } // partition
 } // Quicksorter<T>
