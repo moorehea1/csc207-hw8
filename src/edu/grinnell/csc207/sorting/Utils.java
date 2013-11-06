@@ -10,7 +10,10 @@ import java.util.Random;
  * to help with testing or experiments.
  * 
  * @author Samuel A. Rebelsky
- * @author Your Name Here
+ * @author Kyle Moorehead, Tim Youtz, Ann Hu
+ * 
+ * Citation: The merge method was borrowed from
+ * "https://github.com/mdole/csc207-hw8/"
  */
 class Utils {
     	
@@ -82,24 +85,46 @@ class Utils {
      * -----------------------------------------
      * 		    i   
      */
-    public static <T> T[] merge(Comparator<T> order, T[] a1, int lb1, 
-            int ub1, T[] a2, int lb2, int ub2) {
-	@SuppressWarnings("unchecked")
-	T[] sorted = (T[]) new Object[a1.length + a2.length];
-	
-	int i = 0;
-        while(i < sorted.length) {
-            if(order.compare(a1[lb1], a2[lb2]) <= 0){
-        	sorted[i]=a1[lb1];
-        	lb1++;
-            }
-            else {
-        	sorted[i]=a2[lb2];
-                lb2++;
-            }
-            i++;
-        }
-        return sorted;
+    @SuppressWarnings("unchecked")
+    public static <T> T[] merge(Comparator<T> order, T[] a1, int lb1, int ub1,
+            T[] a2, int lb2, int ub2) {
+        int length = ub1 - lb1 + ub2 - lb2;
+        T[] merged = (T[]) new Object[length];
+        int i = 0;
+        while (i < length) {
+            if (lb1 >= ub1) {
+                while (lb2 < ub2 && i < length) {
+                    merged[i] = a2[lb2];
+                    i++;
+                    lb2++;
+                }// while
+            } else if (lb2 >= ub2) {
+                while (lb1 < ub1 && i < length) {
+                    merged[i] = a1[lb1];
+                    i++;
+                    lb1++;
+                } // while
+            } else {
+                int c = order.compare(a1[lb1], a2[lb2]);
+                if (c < 0) {
+                    merged[i] = a1[lb1];
+                    lb1++;
+                    i++;
+                } else if (c == 0) {
+                    merged[i] = a1[lb1];
+                    lb1++;
+                    ++i;
+                    merged[i] = a2[lb2];
+                    lb2++;
+                    i++;
+                } else {
+                    merged[i] = a2[lb2];
+                    lb2++;
+                    i++;
+                } // if else block for merging according to order
+            } // if else block
+        } // while for merging
+        return merged;
     } // merge(Comparator<T>, T[], int, int, T[], int, int)
 
     /**

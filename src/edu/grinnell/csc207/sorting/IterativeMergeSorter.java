@@ -5,41 +5,47 @@ import java.util.Comparator;
 
 /**
  * Sort using iterative merge sort.
- *
+ * 
  * @author Samuel A. Rebelsky
- * @author Your Name Here.
+ * @author Kyle Moorehead, Tim Youtz, Ann Hu
+ * 
+ * Citation: The sorti method for IterativeMergeSorter was borrowed from
+ * "https://github.com/mdole/csc207-hw8/"
+ * 
  */
 public class IterativeMergeSorter<T> extends SorterBridge<T> {
-   /**
-    * Sort vals using iterative merge sort.  See the Sorter<T> interface
-    * for additional details.
-    * 
-    * Loop invariant: 
-    */
-    
-    //merge(Comparator<T> order, T[] a1, int lb1, 
-    // int ub1, T[] a2, int lb2, int ub2)
-   @Override
-   public T[] sorti(T[] vals, Comparator<T> order) {
-       int size = 1;
-       @SuppressWarnings("unchecked")
-    T[] temp = (T[]) new Object[vals.length];
-       while (size < vals.length) {
-           // Merge neighboring subarrays of size size
-	   for (int i = 0; i < vals.length - size; i += size * 2) {
-               T[] subarray1 = Arrays.copyOfRange(vals, i, i + size);
-               T[] subarray2 = Arrays.copyOfRange(vals, i + size, i + size
-                               + size);
-               
-               temp = Utils.merge(order, subarray1, subarray2);
-               for (int j = i; j < i + size + size; j++) {
-                       vals[j] = temp[j];
-               } // for
-       } // for
-	  
-           // The merged subarrays are now twice as large
-           size *= 2;
-       } // while
-       return vals;
-   } // sorti(T[], Comparator<T>)
+    /**
+     * Sort vals using iterative merge sort. See the Sorter<T> interface for
+     * additional details.
+     * 
+     * Loop invariant:
+     */
+    @SuppressWarnings("unchecked")
+    @Override
+    public T[] sorti(T[] vals, Comparator<T> order) {
+	int size = 1;
+	while (size < vals.length) {
+	    // Merge neighboring subarrays of size size
+	    int i = 0;
+	    T[] temp;
+	    while (i < vals.length) {
+		temp = (T[]) new Object[(Math.min((i + size * 2), vals.length) - i)];
+		temp = Utils.merge(order, vals, i,
+			Math.min(i + size, vals.length), vals,
+			Math.min(i + size, vals.length),
+			Math.min((i + size * 2), vals.length));
+		int j = 0;
+		int k = i;
+		while (j < temp.length) {
+		    vals[k] = temp[j];
+		    j++;
+		    k++;
+		} // while
+		i += size * 2;
+	    } // while
+	      // The merged subarrays are now twice as large
+	    size *= 2;
+	} // while
+	return vals;
+    } // sorti(T[], Comparator<T>)
 } // IterativeMergeSorter<T>

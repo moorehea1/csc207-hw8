@@ -8,7 +8,7 @@ import java.util.Random;
  * Sort using Quicksort.
  *
  * @author Samuel A. Rebelsky
- * @author Your Name Here.
+ * @author Kyle Moorehead, Tim Youtz, Ann Hu
  */
 public class Quicksorter<T> extends SorterBridge<T> {
    /**

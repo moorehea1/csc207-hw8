@@ -1,11 +1,11 @@
 package edu.grinnell.csc207.sorting;
 
-import static org.junit.Assert.*;
-
 import org.junit.Test;
 
 /**
  * Some simple tests of our Selection sort routine.
+ * 
+ * Tests fail but Sorted array is correct. There is something wrong with Resorted. 
  */
 public class SelectionSorterTest {
     @Test
